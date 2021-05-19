@@ -1,0 +1,21 @@
+{
+  "name": "dominant",
+  "version": "0.1.0",
+  "sources": [ "src" ],
+  "package-specs": [
+    {
+      "module": "es6",
+      "in-source": false,
+      "suffix": ".mjs"
+    },
+    {
+      "module": "commonjs",
+      "in-source": true,
+      "suffix": ".bs.js"
+    }
+  ],
+  "bs-dev-dependencies": [],
+  "bs-dependencies": [ "@glennsl/bs-jest" ],
+  "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
+  "namespace": true
+}
