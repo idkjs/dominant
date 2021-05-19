@@ -24,8 +24,5 @@ lib/bs
 .vscode
 .merlin
 node_modules
-dist/index.0cba5f9101dabccc3b01.js
-dist/index.9ae47d877dca56a8599e.js
-dist/index.539241a340021e87ab06.js
-dist/index.32557866c11a671ab157.js
-dist/index.html
+dist/
+yarn.lock

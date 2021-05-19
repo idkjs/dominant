@@ -1,14 +1,22 @@
 {
   "name": "dominant",
   "version": "0.1.0",
-  "sources": ["src"],
-  "package-specs": {
-    "module": "es6",
-    "in-source": false
-  },
+  "bsc-flags": [ "-bs-no-version-header", "-bs-super-errors" ],
+  "package-specs": [
+    {
+      "module": "commonjs",
+      "in-source": true
+    }
+  ],
   "suffix": ".bs.js",
-  "bs-dependencies": ["@glennsl/bs-jest"],
-  "bs-dev-dependencies": [],
-  "bsc-flags": [ "-bs-super-errors"],
-  "namespace": true
+  "sources": [
+    "src",
+    {
+      "dir": "examples",
+      "type": "dev"
+    }
+  ],
+  "bs-dependencies": ["@glennsl/bs-json","@glennsl/bs-jest","@glennsl/rebase","refetch","bs-fetch"],
+  "namespace": true,
+ "warnings": {"number": "-109"}
 }

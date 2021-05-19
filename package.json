@@ -6,22 +6,43 @@
     "clean": "bsb -clean-world",
     "build": "bsb -make-world",
     "watch": "bsb -make-world -w",
+    "build:web": "rm -rf .parcel-cache dist && npm run pack && parcel build demo/index.html --public-url ./",
+    "build-dev": "rm -rf .parcel-cache dist && bsb -make-world",
+    "pack": "esbuild examples/Demo.bs.js --bundle --outfile=demo/index.js",
+    "dev:web": "parcel demo/index.html",
+    "start:web": "npm run build-dev && npm run pack && npm run dev:web",
+    "deploy": "yarn build && gh-pages -d dist",
     "test": "npm run clean && npm run build && jest",
     "build-demo": "npm run build && webpack",
     "dev-demo": "webpack --mode development --watch",
     "dev": "webpack -w",
     "webpack:production": "NODE_ENV=production webpack",
+    "examples": "npm run build && node examples/examples.bs.js",
     "server": "webpack serve"
   },
-  "keywords": [ "BuckleScript", "bs", "reason", "image", "colors" ],
+  "keywords": [
+    "BuckleScript",
+    "bs",
+    "reason",
+    "image",
+    "colors"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "@glennsl/bs-jest": "^0.7.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "bs-fetch": "github:reasonml-community/bs-fetch#next",
     "bs-platform": "^9.0.2",
+    "console-png": "^1.2.1",
+    "debug-http": "^1.1.0",
+    "esbuild": "^0.12.1",
+    "got": "^11.8.2",
     "html-webpack-plugin": "^5.3.1",
     "isomorphic-fetch": "^3.0.0",
+    "parcel": "^2.0.0-beta.2",
+    "refetch": "idkjs/refetch",
+    "stream-to-buffer": "^0.1.0",
     "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2"
@@ -30,6 +51,12 @@
     "verbose": true,
     "testURL": "http://localhost/",
     "testRegex": "Test.bs.js",
-    "transformIgnorePatterns": [ "/node_modules/(?!@glennsl/bs-jest|bs-platform).+\\.js$" ]
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@glennsl/bs-jest|bs-platform).+\\.js$"
+    ]
+  },
+  "dependencies": {
+    "@glennsl/bs-json": "^5.0.2",
+    "@glennsl/rebase": "^0.2.2"
   }
 }
