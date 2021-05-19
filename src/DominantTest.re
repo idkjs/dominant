@@ -1,4 +1,3 @@
-// open Jest;
 Jest.describe("Pixel.ofCharArray", () => {
   Jest.test("an empty array should return an empty list", () =>
     Jest.ExpectJs.expect(Dominant.ofFloatArray([||]))

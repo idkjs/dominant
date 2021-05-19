@@ -13,28 +13,23 @@
     "webpack:production": "NODE_ENV=production webpack",
     "server": "webpack serve"
   },
-  "keywords": [
-    "BuckleScript",
-    "bs",
-    "reason",
-    "image",
-    "colors"
-  ],
+  "keywords": [ "BuckleScript", "bs", "reason", "image", "colors" ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.14.3",
-    "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.2",
     "@glennsl/bs-jest": "^0.7.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bs-platform": "^9.0.2",
     "html-webpack-plugin": "^5.3.1",
+    "isomorphic-fetch": "^3.0.0",
     "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2"
   },
   "jest": {
-    "testRegex": "Spec.bs.js"
-  },
-  "dependencies": {}
+    "verbose": true,
+    "testURL": "http://localhost/",
+    "testRegex": "Test.bs.js",
+    "transformIgnorePatterns": [ "/node_modules/(?!@glennsl/bs-jest|bs-platform).+\\.js$" ]
+  }
 }

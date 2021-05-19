@@ -1,49 +1,49 @@
 type pixel = {
   red: float,
   green: float,
-  blue: float,
+  blue: float
 };
 
 type range = {
   min: float,
-  max: float,
+  max: float
 };
 
 type colorRange = {
   red: range,
   green: range,
-  blue: range,
+  blue: range
 };
 
 let reduceRange = (color, range) => {
   min: min(color, range.min),
-  max: max(color, range.max),
+  max: max(color, range.max)
 };
 
 let reduceColorRange = (pixel: pixel, ~ranges=?, ()) =>
-  switch (ranges) {
+  switch ranges {
   | None => {
       red: {
         min: pixel.red,
-        max: pixel.red,
+        max: pixel.red
       },
       green: {
         min: pixel.green,
-        max: pixel.green,
+        max: pixel.green
       },
       blue: {
         min: pixel.blue,
-        max: pixel.blue,
-      },
+        max: pixel.blue
+      }
     }
   | Some(ranges) => {
       red: reduceRange(pixel.red, ranges.red),
       green: reduceRange(pixel.green, ranges.green),
-      blue: reduceRange(pixel.blue, ranges.blue),
+      blue: reduceRange(pixel.blue, ranges.blue)
     }
   };
 
-let ofColor = (red, green, blue, _): pixel => {red, green, blue};
+let ofColor = (red, green, blue, _) : pixel => {red, green, blue};
 
 let ofFloatArray = colorArray => {
   let rec _fromColorArray = (position, acc) =>
@@ -57,10 +57,10 @@ let ofFloatArray = colorArray => {
               colorArray[position + 0],
               colorArray[position + 1],
               colorArray[position + 2],
-              colorArray[position + 3],
-            ),
-          |],
-        ),
+              colorArray[position + 3]
+            )
+          |]
+        )
       );
     } else {
       acc;
@@ -73,7 +73,7 @@ let getRange = pixelArray =>
     (ranges: option(colorRange), pixel) =>
       Some(reduceColorRange(pixel, ~ranges?, ())),
     None,
-    pixelArray,
+    pixelArray
   );
 
 let sortPixelList = (pixelArray: array(pixel), colorRange) => {
@@ -92,7 +92,7 @@ let sortPixelList = (pixelArray: array(pixel), colorRange) => {
   };
 };
 
-let colorAverage = (pixelArray): pixel => {
+let colorAverage = pixelArray : pixel => {
   let squaredPixelArray =
     pixelArray
     |> Array.map((c: pixel) =>
@@ -100,30 +100,25 @@ let colorAverage = (pixelArray): pixel => {
            {
              red: c.red *. c.red,
              green: c.green *. c.green,
-             blue: c.blue *. c.blue,
+             blue: c.blue *. c.blue
            }: pixel
          )
        );
   let squaredPixelsSum =
     Array.fold_left(
-      (v: pixel, a: pixel) =>
-        {
-          red: v.red +. a.red,
-          green: v.green +. a.green,
-          blue: v.blue +. a.blue,
-        },
+      (v: pixel, a: pixel) => {
+        red: v.red +. a.red,
+        green: v.green +. a.green,
+        blue: v.blue +. a.blue
+      },
       {red: 0., green: 0., blue: 0.},
-      squaredPixelArray,
+      squaredPixelArray
     );
   {
-    red:
-      sqrt(squaredPixelsSum.red /. float_of_int(Array.length(pixelArray))),
+    red: sqrt(squaredPixelsSum.red /. float_of_int(Array.length(pixelArray))),
     green:
-      sqrt(
-        squaredPixelsSum.green /. float_of_int(Array.length(pixelArray)),
-      ),
-    blue:
-      sqrt(squaredPixelsSum.blue /. float_of_int(Array.length(pixelArray))),
+      sqrt(squaredPixelsSum.green /. float_of_int(Array.length(pixelArray))),
+    blue: sqrt(squaredPixelsSum.blue /. float_of_int(Array.length(pixelArray)))
   };
 };
 
@@ -136,7 +131,7 @@ let clusterize = (pixelArray, square) => {
         clusters
         |> Array.map(cluster => {
              let range = getRange(cluster);
-             switch (range) {
+             switch range {
              | None => [|cluster|]
              | Some(range) =>
                sortPixelList(cluster, range);
@@ -145,16 +140,13 @@ let clusterize = (pixelArray, square) => {
                  Array.sub(
                    cluster,
                    Array.length(cluster) / 2,
-                   Array.length(cluster) / 2,
-                 ),
+                   Array.length(cluster) / 2
+                 )
                |];
              };
            })
-        |> Array.fold_left(
-             (acc, cluster) => Array.append(acc, cluster),
-             [||],
-           ),
-        square - 1,
+        |> Array.fold_left((acc, cluster) => Array.append(acc, cluster), [||]),
+        square - 1
       );
     };
   _clusterize([|pixelArray|], square);
@@ -167,13 +159,13 @@ let paletteOfPixelArray = (pixelArray, ~square=4, ()) =>
 
 let ofImageData = (imageData, ~square=?, ()) =>
   paletteOfPixelArray(
-    ofFloatArray(WebApi.ImageData.getData(imageData)),
+    ofFloatArray(Webapi.ImageData.getData(imageData)),
     ~square?,
-    (),
+    ()
   );
 
 let ofUrl = (url, ~square=?, ()) =>
-  WebApi.imageDataOfUrl(url)
+  Webapi.imageDataOfUrl(url)
   |> Js.Promise.then_(imageData =>
        Js.Promise.resolve(ofImageData(imageData, ~square?, ()))
      );
